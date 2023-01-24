@@ -114,6 +114,10 @@ function SignUpForm() {
               onChange={handleUserInfoChange}
             />
 
+            <select name="occupation">
+                
+            </select>
+
         </form>
     )
 };

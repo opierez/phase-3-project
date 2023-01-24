@@ -2,8 +2,6 @@ require 'faker'
 
 puts "🌱 Seeding data..."
 
-occupation_seeds = ["Software Engineering", "Data Science", "Cybersecurity", "Product Design", "Information Technology", "Artificial Intelligence"].each{|occupation| Occupation.create(industry: "Tech", job_title: occupation)}
-
 # #user data
 # brittany = User.create(username: "bcatone", password: "password", first_name: "Brittany", last_name: "Catone", city: "Charlotte", country: "United States", postal_code: "28105", date_of_birth: "1989-01-01", occupation: "Software Engineer")
 # olivia = User.create(username: "olive", password: "password", first_name: "Olivia", last_name: "Perez", city: "Austin", country: "United States", postal_code: "73301", date_of_birth: "1989-03-03", occupation: "Project Manager")
@@ -34,7 +32,12 @@ occupation_seeds = ["Software Engineering", "Data Science", "Cybersecurity", "Pr
 # alex_interest1 = UserInterest.create(user_id: alex.id, interest_id: reading.id)
 # alex_interest2 = UserInterest.create(user_id: alex.id, interest_id: sports.id)
 
+# occupation_seeds = ["Software Engineering", "Data Science", "Cybersecurity", 
+#  "Product Design", "Information Technology", "Artificial Intelligence"].each
+# {|occupation| Occupation.create(industry: "Tech", job_title: occupation)}
 
-
+occupation_seeds = ["Product Manager", "Marketing", "Content", "Operations", "Compliance", "Legal", "Customer Service"].each{|occupation| Occupation.create(industry: "Tech", job_title: occupation)}
+#  "Product Design", "Information Technology", "Artificial Intelligence"].each
+# {|occupation| Occupation.create(industry: "Tech", job_title: occupation)}
 
 puts "✅ Done seeding!"
