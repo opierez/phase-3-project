@@ -8,7 +8,8 @@ import '../styles/App.css'
 import {Switch, Route, BrowserRouter, useParams} from 'react-router-dom'
 import {useState, useEffect} from 'react'
 import EditUserDetails from './EditUserDetails';
-
+import LoginForm from './LoginForm';
+import SignUpForm from './SignUpForm';
 
 
 function App() {
@@ -35,6 +36,10 @@ function App() {
       return <p>Loading...</p>
   }
 
+  const handleLogIn = (user) => {
+
+  }
+
 
   return (
     <div className='app-container'>
@@ -44,7 +49,7 @@ function App() {
       <Switch>
 
         <Route path='/login'>
-          <Login />
+          <LoginForm />
         </Route>
 
         <Route path={`/users/:id/edit`}>
@@ -54,9 +59,10 @@ function App() {
         <Route path='/users/:id'>
           <Home user={user}/>
         </Route>
-
-        
-
+ 
+        <Route path='/signup'>
+          <SignUpForm />
+        </Route>
         
       </Switch>
   

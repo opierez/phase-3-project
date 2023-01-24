@@ -14,6 +14,7 @@ class ApplicationController < Sinatra::Base
   end
 
   post '/signup' do
+
     user = User.find_by(username: params[:username])
 
     if user == nil
@@ -21,6 +22,9 @@ class ApplicationController < Sinatra::Base
       last_name: params[:last_name], city: params[:city], postal_code: params[:postal_code], 
       date_of_birth: params[:date_of_birth])
       user.to_json
+    else
+      flash[:notice] = '<p>"Username already exists."</p>'
+      redirect to '/signup'
     end
 
   end
@@ -38,6 +42,11 @@ class ApplicationController < Sinatra::Base
   get '/users/:id' do
     user = User.find(params[:id])
     user.to_json(include: :interests)
+  end
+
+  get '/interests' do
+  interests = Interest.all
+  interests.to_json
   end
 
 
