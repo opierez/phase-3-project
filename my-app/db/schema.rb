@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_23_203843) do
+ActiveRecord::Schema.define(version: 2023_01_24_140755) do
 
   create_table "connections", force: :cascade do |t|
     t.integer "user1_id"
@@ -25,6 +25,13 @@ ActiveRecord::Schema.define(version: 2023_01_23_203843) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "occupations", force: :cascade do |t|
+    t.string "industry"
+    t.string "job_title"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "user_connections", force: :cascade do |t|
     t.integer "user_id"
     t.integer "connection_id"
@@ -35,6 +42,13 @@ ActiveRecord::Schema.define(version: 2023_01_23_203843) do
   create_table "user_interests", force: :cascade do |t|
     t.integer "user_id"
     t.integer "interest_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "user_occupations", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "occupation_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
