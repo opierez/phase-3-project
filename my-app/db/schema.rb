@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_24_162157) do
+ActiveRecord::Schema.define(version: 2023_01_24_164456) do
 
   create_table "connections", force: :cascade do |t|
     t.integer "user1_id"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 2023_01_24_162157) do
     t.datetime "date_of_birth"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "image"
   end
 
 end

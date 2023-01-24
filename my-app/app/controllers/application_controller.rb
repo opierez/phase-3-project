@@ -8,6 +8,23 @@ class ApplicationController < Sinatra::Base
     occupations.to_json
   end
 
+  post '/login' do
+    user = User.find_by(username: params[:username], password: params[:password])
+    user.to_json
+  end
+
+  post '/signup' do
+    user = User.find_by(username: params[:username])
+
+    if user == nil
+      user = User.create(username: params[:username], password: params[:password], first_name: params[:first_name],
+      last_name: params[:last_name], city: params[:city], postal_code: params[:postal_code], 
+      date_of_birth: params[:date_of_birth])
+      user.to_json
+    end
+
+  end
+
   get '/occupations' do
     occupations = Occupation.all
     occupations.to_json
@@ -16,6 +33,11 @@ class ApplicationController < Sinatra::Base
   get '/users' do
     users = User.all
     users.to_json
+  end
+
+  get '/users/:id' do
+    user = User.find(params[:id])
+    user.to_json(include: :interests)
   end
 
 
