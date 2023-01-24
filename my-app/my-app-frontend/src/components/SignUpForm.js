@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function SignUpForm() {
     const [userInfo, setUserInfo] = useState({
@@ -14,6 +14,21 @@ function SignUpForm() {
         occupation: "",
         interests: []
     });
+
+    const [occupations, setOccupations] = useState([]);
+    const [interests, setInterests] = useState([]);
+
+    useEffect(() => {
+      fetch(`http://localhost:9292/occupations`)
+          .then(resp => resp.json())
+          .then(occupations => setOccupations(occupations.map(occupation => occupation.job_title)))
+    }, [])
+
+    useEffect(() => {
+      fetch(`http://localhost:9292/interests`)
+      .then(resp => resp.json())
+      .then(interests => setInterests(interests.map(interest => interest.interest)))
+    }, [])
 
     const handleUserInfoChange = (e) => {
         let name = e.target.name;
@@ -36,12 +51,17 @@ function SignUpForm() {
         return `${year}-${month}-${day}`;
     };
 
-   
+    const handleSignUpSubmit = (e) => {
+      e.preventDefault();
 
-    console.log(getMinDateOfBirth());
+      console.log(e.target.username);
+    }
 
     return (
-        <form name="sign-up">
+      <div className="container">
+        <h3>Sign Up</h3>
+        <form name="sign-up" onSubmit={handleSignUpSubmit}>
+          <div>
             <label>Username: </label>
             <input
               name="username"
@@ -50,7 +70,9 @@ function SignUpForm() {
               placeholder="Enter username"
               onChange={handleUserInfoChange}
             />
+            </div>
             
+            <div>
             <label>Password: </label>
             <input
               name="password"
@@ -59,16 +81,20 @@ function SignUpForm() {
               placeholder="Enter password"
               onChange={handleUserInfoChange}
             />
+            </div>
             
+            <div>
             <label>Confirm Password: </label>
             <input
-              name="password-confirm"
+              name="password_confirm"
               value={userInfo.password_confirm}
               type="password"
               placeholder="Confirm password"
               onChange={handleUserInfoChange}
             />
+            </div>
             
+            <div>
             <label>First Name: </label>
             <input
               name="first_name"
@@ -77,7 +103,9 @@ function SignUpForm() {
               placeholder="Enter first name"
               onChange={handleUserInfoChange}
             />
-            
+            </div>
+
+            <div>
             <label>Last name: </label>
             <input
               name="last_name"
@@ -86,7 +114,9 @@ function SignUpForm() {
               placeholder="Enter last name"
               onChange={handleUserInfoChange}
             />
+            </div>
             
+            <div>
             <label>Date of Birth: </label>
             <input
               name="date_of_birth"
@@ -95,7 +125,9 @@ function SignUpForm() {
               max={getMinDateOfBirth()}
               onChange={handleUserInfoChange}
             />
+            </div>
             
+            <div>
             <label>City: </label>
             <input
               name="city"
@@ -104,21 +136,47 @@ function SignUpForm() {
               placeholder="Enter city"
               onChange={handleUserInfoChange}
             />
+            </div>
             
-            <label>Zip code: </label>
+            <div>
+            <label>Postal code: </label>
             <input
-              name="last_name"
+              name="postal_code"
               value={userInfo.postal_code}
               type="text"
-              placeholder="Enter zip code"
+              placeholder="Enter postal code"
               onChange={handleUserInfoChange}
             />
+            </div>
 
+            <div>
+            <label>Occupation: </label>
             <select name="occupation">
-                
+                {occupations.map(occupation => 
+                  <option value={occupation}>{occupation}</option>
+                )}
             </select>
+            </div>
+
+            <div>
+            <label>Interests: </label>
+            {interests.map(interest => 
+            <>
+            <input value={interest} type="checkbox" />
+            <label>{interest}</label>
+            <br />
+            </>
+            )}
+            </div>
+
+            <div>
+              <input type="submit" value="Sign Up" />
+            </div>
 
         </form>
+
+      </div>
+        
     )
 };
 
