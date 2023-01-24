@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_23_203843) do
+ActiveRecord::Schema.define(version: 2023_01_24_162110) do
 
   create_table "connections", force: :cascade do |t|
     t.integer "user1_id"
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 2023_01_23_203843) do
     t.string "occupation"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "image"
   end
 
 end
