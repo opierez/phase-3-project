@@ -7,6 +7,7 @@ import MeetPeople from './MeetPeople'
 import '../styles/App.css'
 import {Switch, Route, BrowserRouter, useParams} from 'react-router-dom'
 import {useState, useEffect} from 'react'
+import EditUserDetails from './EditUserDetails';
 import LoginForm from './LoginForm';
 import SignUpForm from './SignUpForm';
 
@@ -14,7 +15,9 @@ import SignUpForm from './SignUpForm';
 function App() {
   const [user, setUser] = useState({})
   const [loading, setLoading] = useState(true)
+  const [userDOB, setUserDOB] = useState('')
   
+ 
 
   useEffect(() => {
       fetch(`http://localhost:9292/users/${1}`)
@@ -22,6 +25,10 @@ function App() {
           .then(data => {
               setUser(data)
               setLoading(false)
+              // console.log(data.date_of_birth)
+              setUserDOB(new Date(data.date_of_birth).toISOString().slice(0, 10));
+              console.log(userDOB)
+              // console.log(date)
           })
   }, [])
 
@@ -45,12 +52,16 @@ function App() {
           <LoginForm />
         </Route>
 
-        <Route path='/signup'>
-          <SignUpForm />
+        <Route path={`/users/:id/edit`}>
+          <EditUserDetails user={user} user_dob={userDOB}/>
         </Route>
 
         <Route path='/users/:id'>
           <Home user={user}/>
+        </Route>
+ 
+        <Route path='/signup'>
+          <SignUpForm />
         </Route>
         
       </Switch>

@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
-import {useParams} from 'react-router-dom'
+import {useParams, Link} from 'react-router-dom'
 import '../styles/Home.css'
 
+
 function Home({ user }) {
+    
+   
+
     return (
         <div className="container">
             <div className="row">
@@ -12,14 +16,16 @@ function Home({ user }) {
             </div>
             <div className='row'>
                 <div className="col-12 text-center">
-                    <h1 className="my-3">{user.first_name} {user.last_name} • {user.occupation}</h1>
+                    <h1 className="my-3">{user.first_name} {user.last_name} • {user.occupations[0].job_title}</h1>
                     <h4 className='text-center'>Interests:</h4>
                     <ul className='text-center'>
                     {user.interests.map(interest => <li key={interest.id}>{interest.interest}</li>)}
                     </ul>
                     <br/>
-                    <button className="btn mx-auto">Edit</button>
-                    <button className="btn mx-auto">Delete</button>
+                    <Link to={`/users/${user.id}/edit`}>
+                        <button className="btn mx-auto">Edit</button>
+                    </Link>
+                        <button className="btn mx-auto">Delete</button>
                 </div>
             </div>
         </div>
