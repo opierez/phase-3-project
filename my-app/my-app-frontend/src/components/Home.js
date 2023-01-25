@@ -8,6 +8,7 @@ function Home({ user }) {
    console.log(user);
 
     return (
+        
         <div className="container">
             <div className="row">
                 <div className="col-12 text-center mt-3">
@@ -16,10 +17,10 @@ function Home({ user }) {
             </div>
             <div className='row'>
                 <div className="col-12 text-center">
-                    <h1 className="my-3">{user.first_name} {user.last_name} • {user.occupations[0].job_title}</h1>
+                    <h1 className="my-3">{user.first_name} {user.last_name} • {user.occupations.length > 0 ? user.occupations[0].job_title : ""}</h1>
                     <h4 className='text-center'>Interests:</h4>
                     <ul className='text-center'>
-                    {user.interests.map(interest => <li key={interest.id}>{interest.interest}</li>)}
+                    {user.interests.length > 0 ? user.interests.map(interest => <li key={interest.id}>{interest.interest}</li>) : ""}
                     </ul>
                     <br/>
                     <Link to={`/users/${user.id}/edit`}>

@@ -1,27 +1,17 @@
 class ApplicationController < Sinatra::Base
   set :default_content_type, 'application/json'
+
+  enable :sessions
   
   # Add your routes here
   get "/" do
-    # { message: "Good luck with your project!" }.to_json
+    redirect to "/login"
   end
 
-  # get '/login' do
-  #   user = User.find_by(params[:username], params[:password])
-  #   user.to_json
-  # end
 
   post '/login' do
     user = User.find_by(username: params[:username], password: params[:password])
-    user.to_json
-    
-    # if user
-    #   user.to_json
-    # else
-    #   flash[:notice] = '<p>"Username or password is incorrect"</p>'
-    #   redirect to '/login'
-    # end
-
+    user.to_json(include: [:interests, :occupations])
   end
 
   post '/signup' do
