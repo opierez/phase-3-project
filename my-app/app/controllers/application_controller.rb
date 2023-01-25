@@ -4,13 +4,24 @@ class ApplicationController < Sinatra::Base
   # Add your routes here
   get "/" do
     # { message: "Good luck with your project!" }.to_json
-    occupations = Occupation.all
-    occupations.to_json
   end
+
+  # get '/login' do
+  #   user = User.find_by(params[:username], params[:password])
+  #   user.to_json
+  # end
 
   post '/login' do
     user = User.find_by(username: params[:username], password: params[:password])
     user.to_json
+    
+    # if user
+    #   user.to_json
+    # else
+    #   flash[:notice] = '<p>"Username or password is incorrect"</p>'
+    #   redirect to '/login'
+    # end
+
   end
 
   post '/signup' do
@@ -20,7 +31,7 @@ class ApplicationController < Sinatra::Base
     if user == nil
       user = User.create(username: params[:username], password: params[:password], first_name: params[:first_name],
       last_name: params[:last_name], city: params[:city], postal_code: params[:postal_code], 
-      date_of_birth: params[:date_of_birth])
+      date_of_birth: params[:date_of_birth], interests: params[:interests], occupations: params[:occupations])
       user.to_json
     else
       flash[:notice] = '<p>"Username already exists."</p>'
@@ -41,12 +52,16 @@ class ApplicationController < Sinatra::Base
 
   get '/users/:id' do
     user = User.find(params[:id])
-    user.to_json(include: :interests)
+    user.to_json(include: [:interests, :occupations])
   end
 
   get '/interests' do
   interests = Interest.all
   interests.to_json
+  end
+
+  get '/connections' do
+    
   end
 
 

@@ -13,6 +13,8 @@ function EditUserDetails({ user, user_dob } ) {
     const [selectedInterests, setSelectedInterests] = useState([]);
     const [interestOptions, setInterestOptions] = useState([]);
     const [occupations, setOccupations] = useState([]);
+    const [userDOB, setUserDOB] = useState('')
+
 
 
     useEffect(() => {
@@ -33,7 +35,10 @@ function EditUserDetails({ user, user_dob } ) {
     }, [])
 
     
-    
+    // const setDateOfBirth = (user) => {
+    //     setUserDOB(new Date(user.date_of_birth).toISOString().slice(0, 10));
+        
+    // }
 
     const [userInfo, setUserInfo] = useState({
         username: user.username,
