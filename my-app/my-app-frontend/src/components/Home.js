@@ -5,7 +5,7 @@ import '../styles/Home.css'
 
 function Home({ user }) {
     
-   
+   console.log(user);
 
     return (
         <div className="container">

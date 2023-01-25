@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Select from 'react-select';
 
 function SignUpForm() {
     const [userInfo, setUserInfo] = useState({
@@ -9,33 +10,47 @@ function SignUpForm() {
         last_name: "",
         date_of_birth: "",
         city: "",
-        country: "",
+        country: "United States",
         postal_code: "",
-        occupation: "",
+        occupation: [],
         interests: []
     });
 
     const [occupations, setOccupations] = useState([]);
     const [interests, setInterests] = useState([]);
+    const [part, setPart] = useState(1);
 
     useEffect(() => {
       fetch(`http://localhost:9292/occupations`)
           .then(resp => resp.json())
-          .then(occupations => setOccupations(occupations.map(occupation => occupation.job_title)))
+          .then(occupations => setOccupations(occupations))
     }, [])
 
     useEffect(() => {
       fetch(`http://localhost:9292/interests`)
       .then(resp => resp.json())
-      .then(interests => setInterests(interests.map(interest => interest.interest)))
+      .then(interests => setInterests(interests))
+      //.then(interests => setInterests(interests.map(interest => interest.interest)))
     }, [])
 
     const handleUserInfoChange = (e) => {
         let name = e.target.name;
         let value = e.target.value;
 
+        if (name === interests) {
+          console.log(interests)
+        }
+
         setUserInfo({...userInfo, [name]: value});
     };
+
+    const handleNext = () => {
+      setPart(part => part + 1)
+    }
+
+    const handlePrevious = () => {
+      setPart(part => part - 1)
+    }
 
     const getMinDateOfBirth = () => {
         let currentDate = new Date();
@@ -61,73 +76,89 @@ function SignUpForm() {
       <div className="container">
         <h3>Sign Up</h3>
         <form name="sign-up" onSubmit={handleSignUpSubmit}>
-          <div>
-            <label>Username: </label>
-            <input
-              name="username"
-              value={userInfo.username}
-              type="text"
-              placeholder="Enter username"
-              onChange={handleUserInfoChange}
-            />
-            </div>
-            
-            <div>
-            <label>Password: </label>
+        { 
+          part === 1 ? (
+          <>
+          <div className="form-group">
+          <label>*Username: </label>
+          <input
+            name="username"
+            value={userInfo.username}
+            type="text"
+            placeholder="Enter username"
+            onChange={handleUserInfoChange}
+            required
+          />
+          </div>
+
+          <div className="form-group">
+            <label>*Password: </label>
             <input
               name="password"
               value={userInfo.password}
               type="password"
               placeholder="Enter password"
               onChange={handleUserInfoChange}
+              required
             />
             </div>
-            
-            <div>
-            <label>Confirm Password: </label>
+
+            <div className="form-group">
+            <label>*Confirm Password: </label>
             <input
               name="password_confirm"
               value={userInfo.password_confirm}
               type="password"
               placeholder="Confirm password"
               onChange={handleUserInfoChange}
+              required
             />
             </div>
-            
-            <div>
-            <label>First Name: </label>
+
+            <div className="form-group">
+            <label>*First Name: </label>
             <input
               name="first_name"
               value={userInfo.first_name}
               type="text"
               placeholder="Enter first name"
               onChange={handleUserInfoChange}
+              required
             />
             </div>
 
-            <div>
-            <label>Last name: </label>
+            <div className="form-group">
+            <label>*Last name: </label>
             <input
               name="last_name"
               value={userInfo.last_name}
               type="text"
               placeholder="Enter last name"
               onChange={handleUserInfoChange}
+              required
             />
             </div>
-            
-            <div>
-            <label>Date of Birth: </label>
+
+            <div className="form-group">
+            <label>*Date of Birth: </label>
             <input
               name="date_of_birth"
               value={userInfo.date_of_birth}
               type="date"
               max={getMinDateOfBirth()}
               onChange={handleUserInfoChange}
+              required
             />
             </div>
-            
-            <div>
+
+            <button onClick={handleNext}>Next</button>
+          </>
+
+        ) : null}
+
+        { part === 2 ? (
+          <>
+          <div className="form-group">
             <label>City: </label>
             <input
               name="city"
@@ -138,7 +169,7 @@ function SignUpForm() {
             />
             </div>
             
-            <div>
+            <div className="form-group">
             <label>Postal code: </label>
             <input
               name="postal_code"
@@ -149,29 +180,68 @@ function SignUpForm() {
             />
             </div>
 
-            <div>
+            <div className="form-group">
+              <label>Country: </label>
+              <select name="country" onChange={handleUserInfoChange}>
+              <option value="Canada">Canada</option>
+                <option value="China">China</option>
+                <option value="England">England</option>
+                <option value="India">India</option>
+                <option value="Japan">Japan</option>
+                <option value="United States" selected>United States</option>
+                
+              </select>
+            </div>
+
+            <div className="form-group">
             <label>Occupation: </label>
-            <select name="occupation">
+            <select name="occupation" onChange={handleUserInfoChange}>
                 {occupations.map(occupation => 
-                  <option value={occupation}>{occupation}</option>
+                  <option key={occupation.id} value={occupation}>{occupation.job_title}</option>
                 )}
             </select>
             </div>
 
-            <div>
+            <div className="form-group">
             <label>Interests: </label>
             {interests.map(interest => 
             <>
-            <input value={interest} type="checkbox" />
-            <label>{interest}</label>
+            <input key={interest.id}  name="interests" value={interest} type="checkbox" />
+            <label>{interest.interest}</label>
             <br />
             </>
             )}
             </div>
+            <button onClick={handlePrevious}>Previous</button>
+            <button onClick={handleNext}>Next</button>
+          </>
+          ) : null
+        }
 
-            <div>
+        {part === 3 ? (
+          <>
+          <h2>Review Details</h2>
+          <p>Username: {userInfo.username}</p>
+          <p>Name: {`${userInfo.first_name} ${userInfo.last_name}`}</p>
+          <p>Date of Birth: {`${userInfo.date_of_birth.slice(5,7)}/${userInfo.date_of_birth.slice(8,10)}/${userInfo.date_of_birth.slice(0,4)}`}</p>
+          <p>Location: {`${userInfo.city}, ${userInfo.postal_code}, ${userInfo.country}`}</p>
+          <p>Occupation: {userInfo.occupation}</p>
+          <button onClick={handlePrevious}>Go Back</button>
+          <div className="form-group">
               <input type="submit" value="Sign Up" />
             </div>
+          </>
+        ) : null}
+
+            {/* <div className="form-group">
+                <label>Interests:</label>
+                <Select 
+                    options={interests} 
+                    value={userInfo.interests} 
+                    onChange={handleSignUpSubmit} 
+                    isMulti 
+                />
+            </div> */}
 
         </form>
 
@@ -181,3 +251,5 @@ function SignUpForm() {
 };
 
 export default SignUpForm
+
+

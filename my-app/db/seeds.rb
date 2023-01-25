@@ -36,7 +36,7 @@ puts "🌱 Seeding data..."
 #  "Product Design", "Information Technology", "Artificial Intelligence"].each
 # {|occupation| Occupation.create(industry: "Tech", job_title: occupation)}
 
-occupation_seeds = ["Product Manager", "Marketing", "Content", "Operations", "Compliance", "Legal", "Customer Service"].each{|occupation| Occupation.create(industry: "Tech", job_title: occupation)}
+# occupation_seeds = ["Product Manager", "Marketing", "Content", "Operations", "Compliance", "Legal", "Customer Service"].each{|occupation| Occupation.create(industry: "Tech", job_title: occupation)}
 #  "Product Design", "Information Technology", "Artificial Intelligence"].each
 # {|occupation| Occupation.create(industry: "Tech", job_title: occupation)}
 

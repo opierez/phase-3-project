@@ -12,14 +12,14 @@ function NavBar() {
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav ml-auto">
                         <li className="nav-item">
-                            <Link className="nav-link" to="/">Home</Link>
+                            <Link className="nav-link" to="/users/:id">Home</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/about">Connect</Link>
+                            <Link className="nav-link" to="/connections">Connect</Link>
                         </li>
-                        <li className="nav-item">
+                        {/* <li className="nav-item">
                             <Link className="nav-link" to="/contact">Events</Link>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
             </div>
