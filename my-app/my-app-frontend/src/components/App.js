@@ -17,7 +17,7 @@ import Connections from './Connections';
 function App() {
   const [user, setUser] = useState({})
 
-  //const history = useHistory();
+  const history = useHistory();
   //const [loading, setLoading] = useState(true)
   //const [userDOB, setUserDOB] = useState('')
 
@@ -62,7 +62,7 @@ function App() {
 
   const handleLogin = (user) => {
     setUser(user);
-    //history.push(`/users/${user.id}`)
+    history.push(`/users/${user.id}`)
   }
 
   return (
@@ -92,6 +92,10 @@ function App() {
         <Route path='/connections'>
           <Connections />
         </Route>
+
+        {/* <Route path='/test'>
+          <Login />
+        </Route> */}
         
       </Switch>
   

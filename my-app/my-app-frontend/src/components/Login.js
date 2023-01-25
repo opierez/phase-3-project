@@ -6,8 +6,7 @@ function Login() {
     const [isSelected, setIsSelected] = useState(false)
     return (
         <div>
-            <LoginForm />
-            <SignUpForm />
+            Hello!
             {/* <button>Sign Up</button> */}
             {/* { isSelected ? <SignUpForm /> : null } */}
         </div>
