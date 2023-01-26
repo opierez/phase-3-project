@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import '../styles/Home.css'
 
 
 
@@ -46,9 +47,9 @@ function LoginForm({handleLogin}) {
     };
 
     return (
-        <div className="container">
+        <div className="main_container">
             <h3>Log In</h3>
-            <form onSubmit={onLoginSubmit}>
+            <form className="login_form" onSubmit={onLoginSubmit}>
 
                 <div className="form-group">
                 <label>Username: </label>

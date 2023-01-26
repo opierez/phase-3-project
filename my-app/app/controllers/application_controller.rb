@@ -32,6 +32,8 @@ class ApplicationController < Sinatra::Base
 
   patch '/users/:id' do
     user = User.find(params[:id])
+    user.update_interests(params[:interests])
+    user.update_user_occupation(params[:occupation])
     user.update(
       username: params[:username], 
       password: params[:password], 
@@ -43,11 +45,21 @@ class ApplicationController < Sinatra::Base
       # interests: params[:interests], 
       # occupations: params[:occupation]
     )
-
-    user.update_interests(params[:interests])
-
+    user.reload
     user.to_json(include: [:interests, :occupations]) 
   end
+
+      # interests = user.update_interests(params[:interests])
+
+
+  delete '/users/:id' do 
+    user = User.find(params[:id])
+    user.interests.destroy_all
+    user.occupations.destroy_all  
+    user.destroy
+    user.to_json
+  end
+
 
   get '/occupations' do
     occupations = Occupation.all
@@ -56,7 +68,7 @@ class ApplicationController < Sinatra::Base
 
   get '/users' do
     users = User.all
-    users.to_json
+    users.to_json(include: [:interests, :occupations])
   end
 
   get '/users/:id' do
@@ -65,13 +77,11 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/interests' do
-  interests = Interest.all
-  interests.to_json
+    interests = Interest.all
+    interests.to_json
   end
 
-  get '/connections' do
-    
-  end
+
 
 
 end

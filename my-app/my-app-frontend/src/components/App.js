@@ -11,7 +11,7 @@ import EditUserDetails from './EditUserDetails';
 import LoginForm from './LoginForm';
 import SignUpForm from './SignUpForm';
 import { useHistory } from 'react-router-dom';
-import Connections from './Connections';
+import ConnectionContainer from './ConnectionContainer';
 
 
 function App() {
@@ -25,6 +25,11 @@ function App() {
   const handleLogin = (user) => {
     setUser(user);
     history.push(`/users/${user.id}`)
+  }
+
+  const handleDeletedUser = (user) => {
+    setUser({})
+    history.push('/login')
   }
 
 
@@ -45,7 +50,7 @@ function App() {
 
   
         <Route path='/users/:id'>
-          <Home user={user}/>
+          <Home user={user} handleDeletedUser={handleDeletedUser}/>
         </Route>
  
         <Route path='/signup'>
@@ -53,7 +58,7 @@ function App() {
         </Route>
 
         <Route path='/connections'>
-          <Connections />
+          <ConnectionContainer user={user}/>
         </Route>
 
         {/* <Route path='/test'>
