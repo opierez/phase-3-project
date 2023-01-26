@@ -40,4 +40,12 @@ puts "🌱 Seeding data..."
 #  "Product Design", "Information Technology", "Artificial Intelligence"].each
 # {|occupation| Occupation.create(industry: "Tech", job_title: occupation)}
 
+UserOccupation.create(user_id: 2, occupation_id: 2)
+UserOccupation.create(user_id: 3, occupation_id: 4)
+UserOccupation.create(user_id: 4, occupation_id: 5)
+UserOccupation.create(user_id: 5, occupation_id: 3)
+
+
+
+
 puts "✅ Done seeding!"

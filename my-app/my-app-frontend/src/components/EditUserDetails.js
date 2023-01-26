@@ -5,40 +5,40 @@ import Select from 'react-select';
 
 
 
+function EditUserDetails({ user, handleLogin } ) {
 
-
-function EditUserDetails({ user, user_dob } ) {
-
-    // console.log(user.occupations[0].job_title)
+    // console.log(user)
+   
     const [selectedInterests, setSelectedInterests] = useState([]);
     const [interestOptions, setInterestOptions] = useState([]);
     const [occupations, setOccupations] = useState([]);
     const [userDOB, setUserDOB] = useState('')
 
-
+    useEffect(() => {
+        if (user && user.date_of_birth) {
+            setUserDOB(new Date(user.date_of_birth).toISOString().slice(0, 10))
+        }
+    }, [user])
 
     useEffect(() => {
         fetch(`http://localhost:9292/occupations`)
             .then(resp => resp.json())
-            .then(occupations => setOccupations(occupations.map(occupation => occupation.job_title)))
-    }, [])
+            .then(occupations => setOccupations(occupations))
+      }, [])
 
-   
-    // console.log(user_dob)
 
     useEffect(() => {
-        fetch('http://localhost:9292/interests')
-            .then(resp => resp.json())
-            .then(interests => {
-                setInterestOptions(interests.map(interest => interest.interest))
-            })
+    fetch(`http://localhost:9292/interests`)
+    .then(resp => resp.json())
+    .then(interests => {
+        console.log(interests)
+        setInterestOptions(interests)
+    })
+    //.then(interests => setInterests(interests.map(interest => interest.interest)))
     }, [])
 
-    
-    // const setDateOfBirth = (user) => {
-    //     setUserDOB(new Date(user.date_of_birth).toISOString().slice(0, 10));
-        
-    // }
+
+
 
     const [userInfo, setUserInfo] = useState({
         username: user.username,
@@ -46,24 +46,44 @@ function EditUserDetails({ user, user_dob } ) {
         password_confirm: user.password,
         first_name: user.first_name,
         last_name: user.last_name,
-        date_of_birth: user_dob,
+        date_of_birth: user.date_of_birth,
         city: user.city,
         country: user.country,
         postal_code: user.postal_code,
-        occupation: user.occupations[0].job_title,
-        interests: []
+        occupation: [],
+        interests: user.interests 
+        // occupation: user.occupations && user.occupations.length > 0 ? user.occupations[0].job_title: '',
+        // interests: user.interests && user.interests.length > 0 ? user.interests : []
     });
 
     const handleUserInfoChange = (e) => {
 
+
         let name = e.target.name;
         let value = e.target.value;
-        if (name === 'date_of_birth') {
-            console.log(value)
-        }
+        // if (name === 'date_of_birth') {
+        //     console.log(value)
+        // }
+
 
         setUserInfo({...userInfo, [name]: value});
     };
+
+    const handleDOBChange = (e) => {
+        let name = e.target.name;
+        let value = e.target.value;
+
+        setUserInfo({...userInfo, [name]: value})
+        setUserDOB(e.target.value)
+    }
+
+    const handleInterestChange = (e) => {
+        let interest_arr = e.map(object => object.value )
+        console.log(interest_arr)
+
+        setUserInfo({...userInfo, interests: interest_arr})
+    }
+  
 
     const getMinDateOfBirth = () => {
         let currentDate = new Date();
@@ -78,11 +98,29 @@ function EditUserDetails({ user, user_dob } ) {
 
         return `${year}-${month}-${day}`;
     };
+
+    const onEditSubmit = (e) => {
+        e.preventDefault();
+        // console.log(user.id)
+
+        fetch(`http://localhost:9292/users/${user.id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(userInfo)
+        })
+        .then(resp => resp.json())
+        .then(updatedUser => {
+            // console.log(updatedUser)
+            console.log(updatedUser)
+        })
+    }
     
 
 
     return(
-        <form name="edit profile details">
+        <form name="edit profile details" onSubmit={onEditSubmit}>
             <h1>Edit Profile Details</h1>
 
             <div className="form-group">
@@ -144,10 +182,10 @@ function EditUserDetails({ user, user_dob } ) {
             <label>Date of Birth: </label>
             <input
               name="date_of_birth"
-              value={user_dob}
+              value={userDOB}
               type="date"
               max={getMinDateOfBirth()}
-              onChange={handleUserInfoChange}
+              onChange={handleDOBChange}
             />
             </div>
             
@@ -177,7 +215,7 @@ function EditUserDetails({ user, user_dob } ) {
                 <label>Occupation: </label>
                 <select name="occupation">
                     {occupations.map(occupation =>
-                    <option value={occupation}>{occupation}</option>
+                    <option key={occupation.id} value={occupation}>{occupation.job_title}</option>
                     )}
                 </select>
             </div>
@@ -185,17 +223,27 @@ function EditUserDetails({ user, user_dob } ) {
             <div className="form-group">
                 <label>Interests:</label>
                 <Select 
-                    options={interestOptions} 
+                    options={interestOptions.map(option => ({label: option.interest, value: option.interest}))}                    
                     value={selectedInterests} 
-                    onChange={setSelectedInterests} 
+                    // onChange={setSelectedInterests} 
+                    onChange={(event) => {
+                        // console.log(event)
+                        handleInterestChange(event)
+                        setSelectedInterests(event);
+                    }}
                     isMulti 
+                    styles={{
+                        option: (base, state) => ({
+                            ...base,
+                            color: state.isSelected ? 'white' : 'black',
+                            backgroundColor: state.isSelected ? 'blue' : 'white',
+                        }),
+                    }}
                 />
             </div>
 
-            <select name="occupation">
-                
-            </select>
 
+            <button type="submit">SUBMIT</button>
         </form>
       
 
