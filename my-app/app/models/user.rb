@@ -16,11 +16,6 @@ class User < ActiveRecord::Base
         my_new_interest_arr
         # binding.pry
     end
-
-    def update_user_occupation occupation_arr 
-      occupation = Occupation.all.find_by(job_title: occupation_arr[0])
-      self.user_occupations.update(occupation_id: occupation.id)
-    end
       
 
 end
