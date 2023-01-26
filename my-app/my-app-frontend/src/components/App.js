@@ -54,7 +54,7 @@ function App() {
         </Route>
  
         <Route path='/signup'>
-          <SignUpForm />
+          <SignUpForm handleLogin={handleLogin}/>
         </Route>
 
         <Route path='/connections'>

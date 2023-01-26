@@ -11,7 +11,7 @@ class ApplicationController < Sinatra::Base
 
   post '/login' do
     user = User.find_by(username: params[:username], password: params[:password])
-    user.to_json(include: [:interests, :occupations])
+    user.to_json(include: [:interests])
   end
 
   # post '/signup' do
@@ -36,7 +36,10 @@ class ApplicationController < Sinatra::Base
       user = User.create(username: params[:username], password: params[:password], first_name: params[:first_name],
       last_name: params[:last_name], city: params[:city], postal_code: params[:postal_code],
       date_of_birth: params[:date_of_birth], occupation: params[:occupation])
-      user.to_json
+      
+      user.create_interests(params[:interests])
+
+      user.to_json(include: :interests) 
     end
   end
 
@@ -58,8 +61,6 @@ class ApplicationController < Sinatra::Base
     user.reload
     user.to_json(include: :interests) 
   end
-
-      # interests = user.update_interests(params[:interests])
 
 
   delete '/users/:id' do 

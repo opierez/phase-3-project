@@ -16,7 +16,7 @@ function SignUpForm({handleLogin}) {
         last_name: "",
         date_of_birth: "",
         city: "",
-        country: "United States",
+        country: "",
         postal_code: "",
         occupation: "",
         interests: []
@@ -43,13 +43,11 @@ function SignUpForm({handleLogin}) {
       //.then(interests => setInterests(interests.map(interest => interest.interest)))
     }, [])
     const handleUserInfoChange = (e) => {
-      console.log(`name: ${e.target.name}`)
-      console.log(`value: ${e.target.value}`)
+      // console.log(`name: ${e.target.name}`)
+      // console.log(`value: ${e.target.value}`)
         let name = e.target.name;
         let value = e.target.value;
-        if (name === "interests") {
-          value = [...userInfo.interests, value]
-        }
+        
         setUserInfo({...userInfo, [name]: value});
     };
     const handleInterestChange = (e) => {
@@ -74,8 +72,8 @@ function SignUpForm({handleLogin}) {
     };
     const handleSignUpSubmit = (e) => {
       e.preventDefault();
-      console.log(e.target.occupations.value);
-      console.log(e.target.interests.value)
+      // console.log(e.target.occupations.value);
+      // console.log(e.target.interests.value)
       fetch("http://localhost:9292/signup", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -186,8 +184,9 @@ function SignUpForm({handleLogin}) {
             </div>
             <div className="form-group">
               <label>*Country: </label>
-              <select name="country" onChange={handleUserInfoChange} defaultValue="United States" required>
-              <option value="Canada">Canada</option>
+              <select name="country" onChange={handleUserInfoChange}>
+                {/* <option value="placeholder" disabled selected>Select an option</option> */}
+                <option value="Canada">Canada</option>
                 <option value="China">China</option>
                 <option value="England">England</option>
                 <option value="India">India</option>
@@ -206,7 +205,8 @@ function SignUpForm({handleLogin}) {
           <h3></h3>
           <div className="form-group">
             <label>Occupation: </label>
-            <select name="occupations" onChange={handleUserInfoChange}>
+            <select name="occupation" onChange={handleUserInfoChange}>
+              {/* <option value="placeholder" disabled selected>Select an option</option> */}
                 {occupations.map(occupation =>
                   <option key={occupation.id} value={occupation.job_title}>{occupation.job_title}</option>
                 )}
@@ -217,14 +217,7 @@ function SignUpForm({handleLogin}) {
               {interests.map(interest =>
                 <option key={interest} value={interest}>{interest}</option>)}
             </select>
-            {/* <label>Interests: </label>
-            {interests.map(interest =>
-            <>
-            <input key={interest}  name="interests" value={interest} type="checkbox" />
-            <label>{interest}</label>
-            <br />
-            </>
-            )} */}
+      
             </div>
             <div className="form-group">
                 <label>Interests:</label>
@@ -253,15 +246,7 @@ function SignUpForm({handleLogin}) {
             </div>
           </>
         ) : null}
-            {/* <div className="form-group">
-                <label>Interests:</label>
-                <Select
-                    options={interests}
-                    value={userInfo.interests}
-                    onChange={handleSignUpSubmit}
-                    isMulti
-                />
-            </div> */}
+          
         </form>
       </div>
     )

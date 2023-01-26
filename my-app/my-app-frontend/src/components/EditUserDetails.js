@@ -10,6 +10,7 @@ function EditUserDetails({ user, handleLogin } ) {
 
     // console.log(user)
 
+    let selectedOccupation = user.occupation;
    
     const [selectedInterests, setSelectedInterests] = useState([]);
     const [interestOptions, setInterestOptions] = useState([]);
@@ -217,7 +218,7 @@ function EditUserDetails({ user, handleLogin } ) {
                 <label>Occupation: </label>
                 <select name="occupation" onChange={handleUserInfoChange}>
                     {occupations.map(occupation =>
-                    <option key={occupation.id} value={occupation.job_title}>{occupation.job_title}</option>
+                    <option key={occupation.id} value={occupation.job_title} selected={occupation.job_title === selectedOccupation}>{occupation.job_title}</option>
                     )}
                 </select>
             </div>
