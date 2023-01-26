@@ -30,6 +30,25 @@ class ApplicationController < Sinatra::Base
 
   end
 
+  patch '/users/:id' do
+    user = User.find(params[:id])
+    user.update(
+      username: params[:username], 
+      password: params[:password], 
+      first_name: params[:first_name],
+      last_name: params[:last_name], 
+      city: params[:city], 
+      postal_code: params[:postal_code], 
+      date_of_birth: params[:date_of_birth], 
+      # interests: params[:interests], 
+      # occupations: params[:occupation]
+    )
+
+    user.update_interests(params[:interests])
+
+    user.to_json(include: [:interests, :occupations]) 
+  end
+
   get '/occupations' do
     occupations = Occupation.all
     occupations.to_json
