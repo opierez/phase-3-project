@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { useParams } from "react-router-dom";
 import '../styles/EditUserDetails.css'
+import '../styles/Home.css'
 import Select from 'react-select';
 
 
@@ -8,6 +9,7 @@ import Select from 'react-select';
 function EditUserDetails({ user, handleLogin } ) {
 
     // console.log(user)
+
    
     const [selectedInterests, setSelectedInterests] = useState([]);
     const [interestOptions, setInterestOptions] = useState([]);
@@ -50,21 +52,23 @@ function EditUserDetails({ user, handleLogin } ) {
         city: user.city,
         country: user.country,
         postal_code: user.postal_code,
-        occupation: [],
-        interests: user.interests 
-        // occupation: user.occupations && user.occupations.length > 0 ? user.occupations[0].job_title: '',
-        // interests: user.interests && user.interests.length > 0 ? user.interests : []
+        // occupation: user.occupations,
+        // interests: user.interests 
+        occupation: user.occupations && user.occupations.length > 0 ? user.occupations[0].job_title: '',
+        interests: user.interests && user.interests.length > 0 ? user.interests : []
     });
 
+    console.log(userInfo.occupation)
+ 
     const handleUserInfoChange = (e) => {
-
 
         let name = e.target.name;
         let value = e.target.value;
         // if (name === 'date_of_birth') {
         //     console.log(value)
         // }
-
+        // console.log(name)
+        // console.log(value)
 
         setUserInfo({...userInfo, [name]: value});
     };
@@ -83,6 +87,8 @@ function EditUserDetails({ user, handleLogin } ) {
 
         setUserInfo({...userInfo, interests: interest_arr})
     }
+
+  
   
 
     const getMinDateOfBirth = () => {
@@ -118,8 +124,8 @@ function EditUserDetails({ user, handleLogin } ) {
     }
     
 
-
     return(
+        <div className="main_container">
         <form name="edit profile details" onSubmit={onEditSubmit}>
             <h1>Edit Profile Details</h1>
 
@@ -211,14 +217,24 @@ function EditUserDetails({ user, handleLogin } ) {
                 />
             </div>
 
-            <div className="form-group">
+            {/* <div className="form-group">
                 <label>Occupation: </label>
-                <select name="occupation">
+                <select name="occupation_select" onChange={(e) => console.log(e.target.value)}>
                     {occupations.map(occupation =>
                     <option key={occupation.id} value={occupation}>{occupation.job_title}</option>
                     )}
                 </select>
+            </div> */}
+
+            <div className="form-group">
+                <label>Occupation: </label>
+                <select name="occupation" onChange={handleUserInfoChange}>
+                    {occupations.map(occupation =>
+                    <option key={occupation.id} value={occupation.job_title}>{occupation.job_title}</option>
+                    )}
+                </select>
             </div>
+
 
             <div className="form-group">
                 <label>Interests:</label>
@@ -245,7 +261,7 @@ function EditUserDetails({ user, handleLogin } ) {
 
             <button type="submit">SUBMIT</button>
         </form>
-      
+    </div>
 
     )
 }

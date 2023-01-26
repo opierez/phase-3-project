@@ -1,0 +1,10 @@
+.main-connection {
+    background-color: #FFAC4A;
+    margin: 50px auto;
+    width: 100%;
+    border-radius: 25px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
