@@ -50,10 +50,11 @@ function EditUserDetails({ user, handleLogin } ) {
         city: user.city,
         country: user.country,
         postal_code: user.postal_code,
-        occupation: [],
-        interests: user.interests 
-        // occupation: user.occupations && user.occupations.length > 0 ? user.occupations[0].job_title: '',
-        // interests: user.interests && user.interests.length > 0 ? user.interests : []
+        
+        //occupation: [],
+        //interests: user.interests 
+        occupation: user.occupations && user.occupations.length > 0 ? user.occupations[0].job_title: '',
+        interests: user.interests && user.interests.length > 0 ? user.interests : []
     });
 
     const handleUserInfoChange = (e) => {

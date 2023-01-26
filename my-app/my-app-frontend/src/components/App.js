@@ -18,11 +18,13 @@ function App() {
   const [user, setUser] = useState({})
 
   const history = useHistory();
+
   //const [loading, setLoading] = useState(true)
   //const [userDOB, setUserDOB] = useState('')
 
 
   const handleLogin = (user) => {
+    console.log(user);
     setUser(user);
     history.push(`/users/${user.id}`)
   }
@@ -49,7 +51,7 @@ function App() {
         </Route>
  
         <Route path='/signup'>
-          <SignUpForm />
+          <SignUpForm handleLogin={handleLogin}/>
         </Route>
 
         <Route path='/connections'>
