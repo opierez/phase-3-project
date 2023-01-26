@@ -19,11 +19,16 @@ function App() {
 
   const history = useHistory();
 
+  //const [loading, setLoading] = useState(true)
+  //const [userDOB, setUserDOB] = useState('')
+
+
   const handleLogin = (user) => {
     console.log(user);
     setUser(user);
     history.push(`/users/${user.id}`)
   }
+
 
   return (
     <div className='app-container'>
@@ -37,7 +42,7 @@ function App() {
         </Route>
 
         <Route path={`/users/:id/edit`}>
-          <EditUserDetails user={user} />
+          <EditUserDetails user={user} handleLogin={handleLogin}/>
         </Route>
 
   
