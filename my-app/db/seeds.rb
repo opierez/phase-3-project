@@ -40,10 +40,20 @@ puts "🌱 Seeding data..."
 #  "Product Design", "Information Technology", "Artificial Intelligence"].each
 # {|occupation| Occupation.create(industry: "Tech", job_title: occupation)}
 
-UserOccupation.create(user_id: 2, occupation_id: 2)
-UserOccupation.create(user_id: 3, occupation_id: 4)
-UserOccupation.create(user_id: 4, occupation_id: 5)
-UserOccupation.create(user_id: 5, occupation_id: 3)
+# UserOccupation.create(user_id: 2, occupation_id: 2)
+# UserOccupation.create(user_id: 3, occupation_id: 4)
+# UserOccupation.create(user_id: 4, occupation_id: 5)
+# UserOccupation.create(user_id: 5, occupation_id: 3)
+
+# user1 = User.first
+# user2 = User.second 
+# user3 = User.third
+# user4 = User.fourth 
+
+# user1.update(occupation: "Software Engineering")
+# user2.update(occupation: "Cybersecurity")
+# user3.update(occupation: "Product Manager")
+# user4.update(occupation: "Marketing")
 
 
 

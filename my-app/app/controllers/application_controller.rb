@@ -14,26 +14,35 @@ class ApplicationController < Sinatra::Base
     user.to_json(include: [:interests, :occupations])
   end
 
+  # post '/signup' do
+
+  #   user = User.find_by(username: params[:username])
+
+  #   if user == nil
+  #     user = User.create(username: params[:username], password: params[:password], first_name: params[:first_name],
+  #     last_name: params[:last_name], city: params[:city], postal_code: params[:postal_code], 
+  #     date_of_birth: params[:date_of_birth], interests: params[:interests], occupation: params[:occupation])
+  #     user.to_json
+  #   else
+  #     flash[:notice] = '<p>"Username already exists."</p>'
+  #     redirect to '/signup'
+  #   end
+
+  # end
+
   post '/signup' do
-
     user = User.find_by(username: params[:username])
-
     if user == nil
       user = User.create(username: params[:username], password: params[:password], first_name: params[:first_name],
-      last_name: params[:last_name], city: params[:city], postal_code: params[:postal_code], 
-      date_of_birth: params[:date_of_birth], interests: params[:interests], occupations: params[:occupations])
+      last_name: params[:last_name], city: params[:city], postal_code: params[:postal_code],
+      date_of_birth: params[:date_of_birth], occupation: params[:occupation])
       user.to_json
-    else
-      flash[:notice] = '<p>"Username already exists."</p>'
-      redirect to '/signup'
     end
-
   end
 
   patch '/users/:id' do
     user = User.find(params[:id])
     user.update_interests(params[:interests])
-    user.update_user_occupation(params[:occupation])
     user.update(
       username: params[:username], 
       password: params[:password], 
@@ -42,11 +51,12 @@ class ApplicationController < Sinatra::Base
       city: params[:city], 
       postal_code: params[:postal_code], 
       date_of_birth: params[:date_of_birth], 
+      occupation: params[:occupation]
       # interests: params[:interests], 
-      # occupations: params[:occupation]
+      
     )
     user.reload
-    user.to_json(include: [:interests, :occupations]) 
+    user.to_json(include: :interests) 
   end
 
       # interests = user.update_interests(params[:interests])

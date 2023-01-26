@@ -52,13 +52,10 @@ function EditUserDetails({ user, handleLogin } ) {
         city: user.city,
         country: user.country,
         postal_code: user.postal_code,
-        // occupation: user.occupations,
+        occupation: user.occupation,
         // interests: user.interests 
-        occupation: user.occupations && user.occupations.length > 0 ? user.occupations[0].job_title: '',
         interests: user.interests && user.interests.length > 0 ? user.interests : []
     });
-
-    console.log(userInfo.occupation)
  
     const handleUserInfoChange = (e) => {
 
@@ -88,9 +85,6 @@ function EditUserDetails({ user, handleLogin } ) {
         setUserInfo({...userInfo, interests: interest_arr})
     }
 
-  
-  
-
     const getMinDateOfBirth = () => {
         let currentDate = new Date();
 
@@ -119,7 +113,7 @@ function EditUserDetails({ user, handleLogin } ) {
         .then(resp => resp.json())
         .then(updatedUser => {
             // console.log(updatedUser)
-            console.log(updatedUser)
+            handleLogin(updatedUser)
         })
     }
     
@@ -217,14 +211,7 @@ function EditUserDetails({ user, handleLogin } ) {
                 />
             </div>
 
-            {/* <div className="form-group">
-                <label>Occupation: </label>
-                <select name="occupation_select" onChange={(e) => console.log(e.target.value)}>
-                    {occupations.map(occupation =>
-                    <option key={occupation.id} value={occupation}>{occupation.job_title}</option>
-                    )}
-                </select>
-            </div> */}
+
 
             <div className="form-group">
                 <label>Occupation: </label>
