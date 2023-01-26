@@ -18,49 +18,9 @@ function App() {
   const [user, setUser] = useState({})
 
   const history = useHistory();
-  //const [loading, setLoading] = useState(true)
-  //const [userDOB, setUserDOB] = useState('')
-
-  // useEffect(() => {
-  //   if (user.id){
-  //     fetch(`http://localhost:9292/users/${user.id}`)
-  //         .then(resp => resp.json())
-  //         .then(data => {
-  //             setUser(data)
-  //             setLoading(false)
-  //             // console.log(data.date_of_birth)
-  //             setUserDOB(new Date(data.date_of_birth).toISOString().slice(0, 10));
-  //             console.log(userDOB)
-  //             // console.log(date)
-  //         })
-  // }}, [user])
-  
-
-  // useEffect(() => {
-  //     fetch(`http://localhost:9292/users/1`)
-  //         .then(resp => resp.json())
-  //         .then(data => {
-  //             setUser(data)
-  //             setLoading(false)
-  //             // console.log(data.date_of_birth)
-  //             //setUserDOB(new Date(data.date_of_birth).toISOString().slice(0, 10));
-  //             //console.log(userDOB)
-  //             // console.log(date)
-  //         })
-  // }, [setUser])
-
-  // if (loading) {
-  //     return <p>Loading...</p>
-  // }
-
-  
-  // const setDateOfBirth = (user) => {
-  //   setUserDOB(new Date(user.date_of_birth).toISOString().slice(0, 10));
-    
-  // }
-  // console.log(userDOB)
 
   const handleLogin = (user) => {
+    console.log(user);
     setUser(user);
     history.push(`/users/${user.id}`)
   }
@@ -86,7 +46,7 @@ function App() {
         </Route>
  
         <Route path='/signup'>
-          <SignUpForm />
+          <SignUpForm handleLogin={handleLogin}/>
         </Route>
 
         <Route path='/connections'>

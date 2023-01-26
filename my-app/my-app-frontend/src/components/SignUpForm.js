@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Select from 'react-select';
 
-function SignUpForm() {
+function SignUpForm({handleLogin}) {
     const [userInfo, setUserInfo] = useState({
         username: "",
         password: "",
@@ -12,7 +12,7 @@ function SignUpForm() {
         city: "",
         country: "United States",
         postal_code: "",
-        occupation: [],
+        occupation: "",
         interests: []
     });
 
@@ -23,26 +23,39 @@ function SignUpForm() {
     useEffect(() => {
       fetch(`http://localhost:9292/occupations`)
           .then(resp => resp.json())
-          .then(occupations => setOccupations(occupations))
+          .then(occupations => {
+            console.log(occupations.map(occupation => occupation.job_title))
+            setOccupations(occupations.map(occupation => occupation.job_title))
+          })
     }, [])
 
     useEffect(() => {
       fetch(`http://localhost:9292/interests`)
       .then(resp => resp.json())
-      .then(interests => setInterests(interests))
+      .then(interests => {
+        console.log(interests.map(interest => interest.interest))
+        setInterests(interests.map(interest => interest.interest))})
       //.then(interests => setInterests(interests.map(interest => interest.interest)))
     }, [])
 
     const handleUserInfoChange = (e) => {
+      console.log(`name: ${e.target.name}`)
+      console.log(`value: ${e.target.value}`)
         let name = e.target.name;
         let value = e.target.value;
 
-        if (name === interests) {
-          console.log(interests)
+        if (name === "interests") {
+          value = [...userInfo.interests, value]
         }
 
         setUserInfo({...userInfo, [name]: value});
     };
+
+    const handleInterestChange = (e) => {
+      let interest_arr = e.map(object => object.value )
+      console.log(interest_arr)
+      setUserInfo({...userInfo, interests: interest_arr})
+  }
 
     const handleNext = () => {
       setPart(part => part + 1)
@@ -69,7 +82,16 @@ function SignUpForm() {
     const handleSignUpSubmit = (e) => {
       e.preventDefault();
 
-      console.log(e.target.username);
+      console.log(e.target.occupations.value);
+      console.log(e.target.interests.value)
+
+      fetch("http://localhost:9292/signup", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userInfo)
+      })
+      .then(resp => resp.json())
+      .then(newUser => handleLogin(newUser))
     }
 
     return (
@@ -115,7 +137,14 @@ function SignUpForm() {
             />
             </div>
 
-            <div className="form-group">
+            <button onClick={handleNext}>Next</button>
+          </>
+
+        ) : null}
+
+        { part === 2 ? (
+          <>
+          <div className="form-group">
             <label>*First Name: </label>
             <input
               name="first_name"
@@ -151,67 +180,44 @@ function SignUpForm() {
             />
             </div>
 
-            <button onClick={handleNext}>Next</button>
-          </>
-
-        ) : null}
-
-        { part === 2 ? (
-          <>
           <div className="form-group">
-            <label>City: </label>
+            <label>*City: </label>
             <input
               name="city"
               value={userInfo.city}
               type="text"
               placeholder="Enter city"
               onChange={handleUserInfoChange}
+              required
             />
             </div>
             
             <div className="form-group">
-            <label>Postal code: </label>
+            <label>*Postal code: </label>
             <input
               name="postal_code"
               value={userInfo.postal_code}
               type="text"
               placeholder="Enter postal code"
               onChange={handleUserInfoChange}
+              required
             />
             </div>
 
             <div className="form-group">
-              <label>Country: </label>
-              <select name="country" onChange={handleUserInfoChange}>
+              <label>*Country: </label>
+              <select name="country" onChange={handleUserInfoChange} defaultValue="United States" required>
               <option value="Canada">Canada</option>
                 <option value="China">China</option>
                 <option value="England">England</option>
                 <option value="India">India</option>
                 <option value="Japan">Japan</option>
-                <option value="United States" selected>United States</option>
+                <option value="United States">United States</option>
                 
               </select>
             </div>
 
-            <div className="form-group">
-            <label>Occupation: </label>
-            <select name="occupation" onChange={handleUserInfoChange}>
-                {occupations.map(occupation => 
-                  <option key={occupation.id} value={occupation}>{occupation.job_title}</option>
-                )}
-            </select>
-            </div>
-
-            <div className="form-group">
-            <label>Interests: </label>
-            {interests.map(interest => 
-            <>
-            <input key={interest.id}  name="interests" value={interest} type="checkbox" />
-            <label>{interest.interest}</label>
-            <br />
-            </>
-            )}
-            </div>
+            
             <button onClick={handlePrevious}>Previous</button>
             <button onClick={handleNext}>Next</button>
           </>
@@ -220,17 +226,47 @@ function SignUpForm() {
 
         {part === 3 ? (
           <>
-          <h2>Review Details</h2>
-          <p>Username: {userInfo.username}</p>
-          <p>Name: {`${userInfo.first_name} ${userInfo.last_name}`}</p>
-          <p>Date of Birth: {`${userInfo.date_of_birth.slice(5,7)}/${userInfo.date_of_birth.slice(8,10)}/${userInfo.date_of_birth.slice(0,4)}`}</p>
-          <p>Location: {`${userInfo.city}, ${userInfo.postal_code}, ${userInfo.country}`}</p>
-          <p>Occupation: {userInfo.occupation}</p>
+          <h2>Tell Us About Yourself</h2>
+          <h3></h3>
+          <div className="form-group">
+            <label>Occupation: </label>
+            <select name="occupations" onChange={handleUserInfoChange}>
+                {occupations.map(occupation => 
+                  <option key={occupation} value={occupation}>{occupation}</option>
+                )}
+            </select>
+            </div>
+
+            <div className="form-group">
+            <select name="interests" onChange={handleUserInfoChange} multiple>
+              {interests.map(interest =>
+                <option key={interest} value={interest}>{interest}</option>)}
+            </select>
+            {/* <label>Interests: </label>
+            {interests.map(interest => 
+            <>
+            <input key={interest}  name="interests" value={interest} type="checkbox" />
+            <label>{interest}</label>
+            <br />
+            </>
+            )} */}
+            </div>
+            <div className="form-group">
+                <label>Interests:</label>
+                <Select 
+                    options={interests} 
+                    value={userInfo.interests} 
+                    onChange={handleInterestChange} 
+                    isMulti 
+                />
+            </div>
           <button onClick={handlePrevious}>Go Back</button>
           <div className="form-group">
               <input type="submit" value="Sign Up" />
             </div>
           </>
+
+          
         ) : null}
 
             {/* <div className="form-group">
