@@ -4,7 +4,7 @@ import '../styles/ConnectionContainer.css'
 import { useParams } from 'react-router-dom'
 
 
-function ConnectionContainer({ loggedInUser, handleFriends }) {
+function ConnectionContainer({ loggedInUser, handleFriends, handlePrexistingFriends }) {
 
     const [users, setUsers] = useState([])
     const [loading, setLoading] = useState(true)
@@ -26,6 +26,7 @@ function ConnectionContainer({ loggedInUser, handleFriends }) {
             .then(resp => resp.json())
             .then(users_data => {
                 // setUsers(users_data)
+                handlePrexistingFriends(users_data)
                 filterUsers(users_data)
                 setLoading(false)
             })
