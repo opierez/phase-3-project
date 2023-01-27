@@ -11,15 +11,10 @@ function NavBar() {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav ml-auto">
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/users/:id">Home</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/connections">Connect</Link>
-                        </li>
-                        {/* <li className="nav-item">
-                            <Link className="nav-link" to="/contact">Events</Link>
-                        </li> */}
+                        <li className="nav-item"><Link className="nav-link" to="/users/:id">Home</Link></li>
+                        <li className="nav-item"><Link className="nav-link" to="/users/connections">Connect</Link></li>
+                        <li className="nav-item"><Link className="nav-link" to="/users/friends">My Friends</Link></li>
+
                     </ul>
                 </div>
             </div>

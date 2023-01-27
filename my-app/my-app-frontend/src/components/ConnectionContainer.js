@@ -4,7 +4,7 @@ import '../styles/ConnectionContainer.css'
 import { useParams } from 'react-router-dom'
 
 
-function ConnectionContainer({ user }) {
+function ConnectionContainer({ loggedInUser, handleFriends }) {
 
     const [users, setUsers] = useState([])
     const [loading, setLoading] = useState(true)
@@ -12,9 +12,9 @@ function ConnectionContainer({ user }) {
     // console.log(user.id)
 
     const filterUsers = (users_data) => {
-        if (user.id) {
+        if (loggedInUser.id) {
             let newUserArray = users_data.filter((element) => {
-                return element.id !== user.id
+                return element.id !== loggedInUser.id
             })
         setUsers(newUserArray)
         }
@@ -41,7 +41,7 @@ function ConnectionContainer({ user }) {
 
     return (
         <main className="main-connection">
-            {users.map(user => <ConnectionCard key={user.id} user={user} />)}
+            {users.map(user => <ConnectionCard key={user.id} user={user} loggedInUser={loggedInUser} handleFriends={handleFriends}/>)}
         </main>
     );
 
