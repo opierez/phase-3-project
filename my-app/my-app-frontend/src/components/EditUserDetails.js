@@ -225,7 +225,7 @@ function EditUserDetails({ user, handleLogin } ) {
 
 
             <div className="form-group">
-                <label>Interests:</label>
+                <label>Interests (required):</label>
                 <Select 
                     options={interestOptions.map(option => ({label: option.interest, value: option.interest}))}                    
                     value={selectedInterests} 
