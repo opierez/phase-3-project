@@ -92,7 +92,28 @@ class ApplicationController < Sinatra::Base
     interests.to_json
   end
 
+  post '/connections' do
+    user1 = User.find(params[:user1])
+    user2 = User.find(params[:user2])
+    connection_check1 = Connection.find_by(user1_id: user1.id, user2_id: user2.id)
+    connection_check2 = Connection.find_by(user1_id: user2.id, user2_id: user1.id)
 
+    if (!connection_check1 && !connection_check2) 
+      new_connection1 = Connection.create(user1_id: user1.id, user2_id: user2.id)
+      new_connection2 = Connection.create(user1_id: user2.id, user2_id: user1.id)
+      user2.to_json(include: :interests)
+
+    else 
+      status 204
+      "Already connected with user"
+    end
+
+  end
+  
+  get '/connections' do
+    connections = Connection.all
+    connections.to_json
+  end
 
 
 end
