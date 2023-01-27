@@ -206,7 +206,7 @@ function SignUpForm({handleLogin}) {
           <div className="form-group">
             <label>Occupation: </label>
             <select name="occupation" onChange={handleUserInfoChange}>
-              {/* <option value="placeholder" disabled selected>Select an option</option> */}
+              <option value="placeholder" disabled selected>Select an option</option>
                 {occupations.map(occupation =>
                   <option key={occupation.id} value={occupation.job_title}>{occupation.job_title}</option>
                 )}
