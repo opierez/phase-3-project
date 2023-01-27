@@ -16,7 +16,7 @@ import FriendContainer from './FriendContainer';
 
 function App() {
   const [user, setUser] = useState({})
-  // const [users, setUsers] = useState([])
+  const [users, setUsers] = useState([])
   const [friends, setFriends] = useState([])
   const [connections, setConnections] = useState([])
 
@@ -26,13 +26,22 @@ function App() {
 
   useEffect(() => {
     fetch(`http://localhost:9292/connections`)
-        .then(resp => resp.json())
-        .then(connections_data => setConnections(connections_data))
+    .then(resp => resp.json())
+    .then(resp => setConnections(resp))
   }, [])
 
+  useEffect(() => {
+    fetch(`http://localhost:9292/users`)
+        .then(resp => resp.json())
+        .then(users_data => {
+            setUsers(users_data)
+        })
+}, [])
 
+  
   const handleLogin = (user) => {
     setUser(user);
+    addExistingFriends(user)
     history.push(`/users/${user.id}`)
   }
 
@@ -47,12 +56,37 @@ function App() {
     }
   }
 
-  
+  const addExistingFriends = (loggedInUser) => {
+    let friendConnectionsIdArr = connections.filter(connection => {
+      return connection.user2_id === loggedInUser.id
+    }).map(friendConnection => friendConnection.user1_id)
+
+    let preexistingFriends = users.filter(u => {
+      return friendConnectionsIdArr.find(element => element === u.id)
+    })
+
+    setFriends(preexistingFriends)
+
+  }
+
+  const addNewFriend = () => {
+   
+    let friendConnectionsIdArr = connections.filter(connection => {
+      return connection.user2_id === user.id
+    }).map(friendConnection => friendConnection.user1_id)
+
+    let preexistingFriends = users.filter(u => {
+      return friendConnectionsIdArr.find(element => element === u.id)
+    })
+    setFriends([preexistingFriends, ...friends])
+  }
+
+
 
 
   return (
     <div className='app-container'>
-    <NavBar />
+    <NavBar user={user}/>
     <div className='container d-flex mx-auto'>
       
       <Switch>
@@ -62,7 +96,7 @@ function App() {
         </Route>
 
         <Route path='/users/connections'>
-          <ConnectionContainer loggedInUser={user} handleFriends={handleFriends}/>
+          <ConnectionContainer loggedInUser={user} users={users} handleFriends={handleFriends} handlePrexistingFriends={addNewFriend}/>
         </Route>
 
         <Route path={`/users/:id/edit`}>
