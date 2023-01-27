@@ -1,7 +1,7 @@
 import React from "react";
 import {Link} from 'react-router-dom';
 import '../styles/NavBar.css'
-function NavBar() {
+function NavBar({user, handleSignOut}) {
     return (
         <nav className="navbar navbar-expand-md navbar-dark">
             <div className="container-fluid">
@@ -14,6 +14,7 @@ function NavBar() {
                         <li className="nav-item"><Link className="nav-link" to="/users/:id">Home</Link></li>
                         <li className="nav-item"><Link className="nav-link" to="/users/connections">Connect</Link></li>
                         <li className="nav-item"><Link className="nav-link" to="/users/friends">My Friends</Link></li>
+                        {user.id ? <li className="sign-out"><Link className="nav-link" to="/login" onClick={handleSignOut}>Sign out</Link></li> : null}
 
                     </ul>
                 </div>

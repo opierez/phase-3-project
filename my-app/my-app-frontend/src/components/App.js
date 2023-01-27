@@ -81,12 +81,14 @@ function App() {
     setFriends([preexistingFriends, ...friends])
   }
 
-
+  const handleSignOut = () => {
+    setUser({})
+  }
 
 
   return (
     <div className='app-container'>
-    <NavBar user={user}/>
+    <NavBar user={user} handleSignOut={handleSignOut}/>
     <div className='container d-flex mx-auto'>
       
       <Switch>
